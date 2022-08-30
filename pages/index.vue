@@ -15,6 +15,7 @@ export default {
     return {
       title: 'Departures',
       allDepartures: [],
+      selectedDeparture: {},
       loading: false
     }
   },
