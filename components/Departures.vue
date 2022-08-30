@@ -47,7 +47,7 @@
             <td class="md:pl-20 p-4 my-7 px-2">
               {{ departure.scheduledDepartureDateTime.slice(-8, -3) }}
             </td>
-            <td class="text-dark-yellow px-2">
+            <td class="px-2 text-dark-yellow">
               {{ departure.arrivalAirport.name.replace(' Airport', '')
               }}<br /><span class="text-light-yellow">{{
                 departure.arrivalAirport.countryName
@@ -57,25 +57,14 @@
               {{ departure.arrivalAirport.code.toUpperCase() }}
             </td>
             <td class="px-2">{{ departure.airline.name }}</td>
-            <td class="px-2">
-              <!-- <div v-if="departure.departureGate.name.length">{{ departure.departureGate.name }}</div> -->
-              <span class="text-dark-yellow">here</span>
+            <td
+              class="px-2 text-dark-yellow"
+              v-if="departure.departureGate !== null"
+            >
+              {{ departure.departureGate }}
             </td>
             <td class="rounded-r-lg px-2">
-              <span
-                class="
-                  border-l-8 border-solid border-light-yellow
-                  bg-white
-                  rounded-r-full
-                  flex
-                  text-black
-                  rounded-l-sm
-                  p-2
-                  px-4
-                  md:w-72
-                "
-                >{{ departure.status }}</span
-              >
+              <span :class="classes">{{ departure.status }}</span>
             </td>
           </tr>
         </tbody>
@@ -224,6 +213,17 @@ export default {
   },
   mounted() {
     this.showForm = false
+
+    console.log('classes: ', this.classes)
+  },
+  computed: {
+    classes(departure) {
+      if (departure.status === 'Final Call - Gate 5') {
+        return 'border-l-8 border-solid border-green bg-red rounded-r-full flex text-black rounded-l-sm p-2 px-4 md:w-72'
+      } else {
+        return 'border-l-8 border-solid border-light-yellow bg-white rounded-r-full flex text-black rounded-l-sm p-2 px-4 md:w-72'
+      }
+    },
   },
   methods: {
     scrollToForm() {
