@@ -170,12 +170,20 @@
             <label for="departureTime" class="text-gray flex flex-col font-bold"
               >Status:</label
             >
-            <input
+            <select
               type="text"
-              v-model="this.selectedDeparture.status"
               name="departureStatus"
               class="rounded w-full md:w-4/5 p-4 border-2 border-gray-500"
-            />
+            >
+              <option value="Please select">Please select</option>
+              <option
+                v-for="option in statusOptions"
+                :key="option.id"
+                name="option"
+              >
+                {{ option }}
+              </option>
+            </select>
           </div>
           <div class="w-1/3 flex-col">
             <br />
@@ -202,6 +210,7 @@ export default {
   },
   data() {
     return {
+      statusOptions: ['Departed', 'Diverted', 'Delayed', 'Cancelled', 'Custom'],
       selectedDeparture: {
         departureTime: '',
         cityName: '',
