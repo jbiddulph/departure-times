@@ -260,7 +260,6 @@ export default {
         this.selectedDeparture.gateNo = departure.departureGate.number
       }
       this.selectedDeparture.status = departure.status
-      console.log('Selected Departure:', this.selectedDeparture)
     },
   },
 }
