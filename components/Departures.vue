@@ -57,14 +57,14 @@
               {{ departure.arrivalAirport.code.toUpperCase() }}
             </td>
             <td class="px-2">{{ departure.airline.name }}</td>
-            <td
-              class="px-2 text-dark-yellow"
-              v-if="departure.departureGate !== null"
-            >
-              {{ departure.departureGate }}
+            <td class="px-2 text-dark-yellow" v-if="departure.departureGate">
+              <div v-if="typeof departure.departureGate.number === 'string'">
+                {{ departure.departureGate.number }}
+              </div>
             </td>
+            <td class="px-2 text-dark-yellow" v-else>&nbsp;</td>
             <td class="rounded-r-lg px-2">
-              <span :class="classes">{{ departure.status }}</span>
+              <span :class="classes(departure)">{{ departure.status }}</span>
             </td>
           </tr>
         </tbody>
@@ -156,7 +156,7 @@
             >
             <input
               type="text"
-              v-model="this.selectedDeparture.gate"
+              v-model="this.selectedDeparture.gateNo"
               name="departureGate"
               class="rounded w-full md:w-4/5 p-4 border-2 border-gray-500"
             />
@@ -213,19 +213,19 @@ export default {
   },
   mounted() {
     this.showForm = false
-
-    console.log('classes: ', this.classes)
   },
-  computed: {
+  methods: {
     classes(departure) {
-      if (departure.status === 'Final Call - Gate 5') {
-        return 'border-l-8 border-solid border-green bg-red rounded-r-full flex text-black rounded-l-sm p-2 px-4 md:w-72'
+      if (departure.status.includes('Go to Gate')) {
+        return 'border-l-8 border-solid border-blue bg-white text-blue rounded-r-full flex text-black rounded-l-sm p-2 px-4 md:w-72'
+      } else if (departure.status.includes('Final Call')) {
+        return 'border-l-8 border-solid border-green bg-white text-green rounded-r-full flex text-black rounded-l-sm p-2 px-4 md:w-72'
+      } else if (departure.status.includes('Departed')) {
+        return 'border-l-8 border-solid border-orange bg-white text-orange rounded-r-full flex text-black rounded-l-sm p-2 px-4 md:w-72'
       } else {
         return 'border-l-8 border-solid border-light-yellow bg-white rounded-r-full flex text-black rounded-l-sm p-2 px-4 md:w-72'
       }
     },
-  },
-  methods: {
     scrollToForm() {
       const el = this.$refs.scrollToMe
 
@@ -242,7 +242,7 @@ export default {
       this.selectedDeparture.countryName = departure.arrivalAirport.countryName
       this.selectedDeparture.code = departure.arrivalAirport.code.toUpperCase()
       this.selectedDeparture.airline = departure.airline.name
-      this.selectedDeparture.gateNo = departure.status
+      this.selectedDeparture.gateNo = departure.departureGate.number
       this.selectedDeparture.status = departure.status
       console.log('Selected Departure:', this.selectedDeparture)
     },
