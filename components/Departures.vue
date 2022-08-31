@@ -150,7 +150,10 @@
               class="rounded w-full md:w-4/5 p-4 border-2 border-gray-500"
             />
           </div>
-          <div class="md:w-1/3 w-full flex-col mb-10 md:mb-0">
+          <div
+            class="md:w-1/3 w-full flex-col mb-10 md:mb-0"
+            v-if="this.selectedDeparture.gateNo"
+          >
             <label for="departureTime" class="text-gray flex flex-col font-bold"
               >Gate:</label
             >
@@ -242,7 +245,11 @@ export default {
       this.selectedDeparture.countryName = departure.arrivalAirport.countryName
       this.selectedDeparture.code = departure.arrivalAirport.code.toUpperCase()
       this.selectedDeparture.airline = departure.airline.name
-      this.selectedDeparture.gateNo = departure.departureGate.number
+      if (!departure.departureGate) {
+        this.selectedDeparture.gateNo = '0'
+      } else {
+        this.selectedDeparture.gateNo = departure.departureGate.number
+      }
       this.selectedDeparture.status = departure.status
       console.log('Selected Departure:', this.selectedDeparture)
     },
