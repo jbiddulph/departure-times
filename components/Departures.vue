@@ -239,6 +239,7 @@ export default {
       }
     },
     scrollToForm() {
+      this.showForm = true
       const el = this.$refs.scrollToMe
 
       if (el) {
@@ -246,7 +247,6 @@ export default {
       }
     },
     getSelectedDeparture(departure) {
-      this.showForm = true
       this.scrollToForm()
       this.selectedDeparture.departureTime =
         departure.scheduledDepartureDateTime.slice(-8, -3)
